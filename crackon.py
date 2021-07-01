@@ -1,4 +1,44 @@
-from constraint import *
+from random import randint
+
+
+def move(ingredients,amount):
+    giver=0
+    taker=0
+    while (giver==taker):
+        giver=randint(0,len(ingredients.keys())-1)
+        taker=randint(0,len(ingredients.keys())-1)
+        
+    print("{} {}".format(giver,taker))
+    old_fitness=fitness(ingredients)
+    giver_name=list(ingredients)[giver]
+    taker_name=list(ingredients)[taker]
+    ingredients[giver_name]-=amount
+    ingredients[taker_name]+=amount
+    new_fitness=fitness(ingredients)
+    print("Old fitness was {:.2f} and new fitness is {:.2f}".format(old_fitness,new_fitness))
+    if old_fitness<new_fitness:
+        ingredients[giver_name]+=amount
+        ingredients[taker_name]-=amount
+        
+
+
+def fitness(ingredients):
+    total=0
+    #I really want a least squares error but we'll get there. 
+    total=total+tot_fat_target-total_up(ingredients,tot_fat)
+    total=total+sat_fat_target-total_up(ingredients,sat_fat)
+    return abs(total) # we only want positive numbers
+
+
+def total_up(ingredients,attribute):
+    total=0
+    for key in ingredients.keys():
+        amount=ingredients[key]*attribute[key]/100 #the 100 is because the values are stored as grams per 100 rather than a decimal percentage
+        total+=amount
+#        print("There is {}g of {}, which is {} percent important, for a total of {}".format(ingredients[key],key,attribute[key],amount))
+    return total
+
+
 tot_fat={}
 tot_fat['water']=0
 tot_fat['paprika']=13
@@ -29,37 +69,44 @@ sat_fat['acetic_acid']=0
 sat_fat['citric_acid']=0
 sat_fat['tamarind']=0
 sat_fat['garlic_powder']=0
-percent=range(10)
-print(percent)
-problem = Problem()
-def order(a,b):
-    return a>=b
 
-def sum_tot_fat(amount, *args):
-    print(amount)
-    print(args)
-    total=0
-    for ingredient in args:
-        total=total+(ingredient*tot_fat[ingredient])
-        print("{}: {}".format(ingredient,tot_fat[ingredient]))
-    
-    print(total)
-    return total==amount
+serving_size=100  #sometimes would be 30 or similar 
+step_size=1 #for the start 
+ingredients={}
+ingredients
+ingredients['water']=0
+ingredients['paprika']=0
+ingredients['coriander']=0
+ingredients['turmeric']=0
+ingredients['cumin']=0
+ingredients['fennel']=0
+ingredients['cloves']=0
+ingredients['rapeseed_oil']=0
+ingredients['salt']=0
+ingredients['maize_flour']=0
+ingredients['acetic_acid']=0
+ingredients['citric_acid']=0
+ingredients['tamarind']=0
+ingredients['garlic_powder']=0
 
-problem.addVariable("water", percent)
-problem.addVariable("paprika", percent)
-problem.addVariable("coriander", percent)
-problem.addVariable("turmeric",  percent)
-problem.addVariable("cumin", percent)
-problem.addConstraint(ExactSumConstraint(6)) #the total size of the serving - should be 100. 
-problem.addConstraint(FunctionConstraint(order), ["water","paprika"])
-problem.addConstraint(FunctionConstraint(order), ["paprika","coriander"])
-problem.addConstraint(FunctionConstraint(order), ["coriander","turmeric"])
-problem.addConstraint(FunctionConstraint(order), ["turmeric","cumin"])
+tot_fat_target=22.3
+sat_fat_target=1.7
+initial_value=serving_size/len(ingredients.keys())
+print("The initial value is {:.3f}g".format(initial_value))
+for key in ingredients.keys():
+    ingredients[key]=initial_value
 
-for solution in problem.getSolutions():
-    print(solution)
+print(fitness(ingredients))
 
-print(order("water","cumin"))
+for x in range(1000):
+    step_size=step_size-0.001
+    move(ingredients,step_size)
 
-print(sum_tot_fat(44,"water","paprika","coriander"))
+print("The Final Ingredients are:")
+
+for ingredient in ingredients:
+    print("{} - {:.3f}g".format(ingredient,ingredients[ingredient]))
+
+
+
+

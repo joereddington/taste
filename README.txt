@@ -52,6 +52,16 @@ We'll need a class.
 
 How do I store these when I read them. Or go through.hhmmm.   
 
+## 01/07/21 06:43, 
+Okay so I can write totalls. 
+I now need an overall value function. And then the ability to swap grams sometimes.  
+
+
+## 01/07/21 06:55, Okay, so you have to have an order check, because otherwise you can't backtrack at all. (or, you have to have explicit backtracking)  
+
+
+
+j
 
 
 
