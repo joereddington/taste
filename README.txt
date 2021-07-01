@@ -60,8 +60,19 @@ I now need an overall value function. And then the ability to swap grams sometim
 ## 01/07/21 06:55, Okay, so you have to have an order check, because otherwise you can't backtrack at all. (or, you have to have explicit backtracking)  
 
 
+## 01/07/21 07:22, I've added carbs, sugars and protein, but I'm getting wildly different values even after 10000 runs 
 
-j
+
+## 01/07/21 07:56, So here is the problem about inorder -There is exactly one move first (which comes up rarely) then two possible moves after tat. 
+
+## 01/07/21 08:17, Okay, I've solved a bunch of bugs, feel pleased with that. 
+
+# TODO 
+* Add the ordering constraints
+* Add fixing the rest of the numbers 
+
+
+
 
 
 
